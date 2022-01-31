@@ -25,7 +25,10 @@ describe InvitesController do
     end
 
     it 'shows unobfuscated email if email data is present in authentication data' do
-      ActionDispatch::Request.any_instance.stubs(:session).returns(authentication: { email: invite.email })
+      store = ActionDispatch::Session::CookieStore.new({})
+      session_stub = ActionDispatch::Request::Session.create(store, ActionDispatch::TestRequest.create, {})
+      session_stub[:authentication] = { email: invite.email }
+      ActionDispatch::Request.any_instance.stubs(:session).returns(session_stub)
       get "/invites/#{invite.invite_key}"
       expect(response.status).to eq(200)
       expect(response.body).to have_tag(:script, with: { src: '/assets/application.js' })
