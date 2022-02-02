@@ -1,10 +1,16 @@
 # frozen_string_literal: true
 
 # Be sure to restart your server when you modify this file.
-#
-Rails.application.config.to_prepare do
-  require 'discourse_cookie_store'
 
+require 'discourse_cookie_store'
+
+Rails.application.config.session_store(
+  :discourse_cookie_store,
+  key: '_forum_session',
+  path: (Rails.application.config.relative_url_root.nil?) ? '/' : Rails.application.config.relative_url_root
+)
+
+Rails.application.config.to_prepare do
   if Rails.env.development? && SiteSetting.force_https
     STDERR.puts
     STDERR.puts "WARNING: force_https is enabled in dev"
@@ -14,10 +20,4 @@ Rails.application.config.to_prepare do
     STDERR.puts "SiteSetting.force_https = false"
     STDERR.puts
   end
-
-  Discourse::Application.config.session_store(
-    :discourse_cookie_store,
-    key: '_forum_session',
-    path: (Rails.application.config.relative_url_root.nil?) ? '/' : Rails.application.config.relative_url_root
-  )
 end
