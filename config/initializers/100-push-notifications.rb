@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-Rails.application.config.to_prepare do
-  break if GlobalSetting.skip_db?
+return if GlobalSetting.skip_db?
 
+Rails.application.config.to_prepare do
   require 'webpush'
 
   def generate_vapid_key?

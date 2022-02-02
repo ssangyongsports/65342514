@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-Rails.application.config.to_prepare do
-  break if GlobalSetting.skip_db?
+return  if GlobalSetting.skip_db?
 
+Rails.application.config.to_prepare do
   # Some sanity checking so we don't count on an unindexed column on boot
   begin
     if ActiveRecord::Base.connection.table_exists?(:users) &&
