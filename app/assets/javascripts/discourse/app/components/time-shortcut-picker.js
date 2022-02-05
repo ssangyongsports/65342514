@@ -174,12 +174,12 @@ export default Component.extend({
     "customLabels",
     "userTimezone"
   )
-  options(hiddenOptions, customOptions, customLabels, userTimezone) {
+  _options(hiddenOptions, customOptions, customLabels, userTimezone) {
     this._loadLastUsedCustomDatetime();
 
-    let options = defaultShortcutOptions(userTimezone);
-    this._hideDynamicOptions(options);
-    options = options.concat(customOptions);
+    let _options = defaultShortcutOptions(userTimezone);
+    this._hideDynamicOptions(_options);
+    _options = _options.concat(customOptions);
 
     let specialOptions = specialShortcutOptions();
     if (this.lastCustomDate && this.lastCustomTime) {
@@ -191,19 +191,19 @@ export default Component.extend({
       lastCustom.timeFormatKey = "dates.long_no_year";
       lastCustom.hidden = false;
     }
-    options = options.concat(specialOptions);
+    _options = _options.concat(specialOptions);
 
     if (hiddenOptions.length > 0) {
-      options.forEach((opt) => {
+      _options.forEach((opt) => {
         if (hiddenOptions.includes(opt.id)) {
           opt.hidden = true;
         }
       });
     }
 
-    this._applyCustomLabels(options, customLabels);
-    this._formatTime(options);
-    return options;
+    this._applyCustomLabels(_options, customLabels);
+    this._formatTime(_options);
+    return _options;
   },
 
   @action
@@ -219,7 +219,7 @@ export default Component.extend({
 
   @action
   selectShortcut(type) {
-    if (this.options.filterBy("hidden").mapBy("id").includes(type)) {
+    if (this._options.filterBy("hidden").mapBy("id").includes(type)) {
       return;
     }
 
@@ -239,7 +239,7 @@ export default Component.extend({
         localStorage.lastCustomDate = this.customDate;
       }
     } else {
-      dateTime = this.options.findBy("id", type).time;
+      dateTime = this._options.findBy("id", type).time;
     }
 
     this.setProperties({
