@@ -168,18 +168,18 @@ export default Component.extend({
     this.selectShortcut(TIME_SHORTCUT_TYPES.CUSTOM);
   },
 
-  @discourseComputed(
-    "hiddenOptions",
-    "customOptions",
-    "customLabels",
-    "userTimezone"
-  )
-  _options(hiddenOptions, customOptions, customLabels, userTimezone) {
+  @discourseComputed("options", "hiddenOptions", "customLabels", "userTimezone")
+  _options(options, hiddenOptions, customLabels, userTimezone) {
     this._loadLastUsedCustomDatetime();
 
-    let _options = defaultShortcutOptions(userTimezone);
+    let _options;
+    if (options && options.length) {
+      _options = options;
+    } else {
+      _options = defaultShortcutOptions(userTimezone);
+    }
+
     this._hideDynamicOptions(_options);
-    _options = _options.concat(customOptions);
 
     let specialOptions = specialShortcutOptions();
     if (this.lastCustomDate && this.lastCustomTime) {
