@@ -17,7 +17,6 @@ import { isEmpty } from "@ember/utils";
 import KeyboardShortcuts from "discourse/lib/keyboard-shortcuts";
 import {
   TIME_SHORTCUT_TYPES,
-  defaultShortcutOptions,
   shortcutOptions,
 } from "discourse/lib/time-shortcut";
 import ItsATrap from "@discourse/itsatrap";
@@ -86,13 +85,18 @@ export default Component.extend({
   @discourseComputed()
   timeOptions() {
     const timezone = this.currentUser.resolvedTimezone(this.currentUser);
-    const optionsFactory = shortcutOptions(timezone);
+    const options = shortcutOptions(timezone);
 
-    const options = defaultShortcutOptions(timezone);
-    options.push(optionsFactory.twoWeeks());
-    options.push(optionsFactory.sixMonths());
-
-    return options;
+    return [
+      options.laterToday(),
+      options.tomorrow(),
+      options.laterThisWeek(),
+      options.thisWeekend(),
+      options.monday(),
+      options.twoWeeks(),
+      options.nextMonth(),
+      options.sixMonths(),
+    ];
   },
 
   @discourseComputed
