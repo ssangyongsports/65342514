@@ -6,8 +6,10 @@ import {
   nextBusinessWeekStart,
   nextMonth,
   now,
+  sixMonths,
   thisWeekend,
   tomorrow,
+  twoWeeks,
 } from "discourse/lib/time-utils";
 
 export const TIME_SHORTCUT_TYPES = {
@@ -118,6 +120,24 @@ export function shortcutOptions(timezone) {
         id: TIME_SHORTCUT_TYPES.NEXT_MONTH,
         label: "time_shortcut.next_month",
         time: nextMonth(timezone),
+        timeFormatKey: "dates.long_no_year",
+      };
+    },
+    twoWeeks() {
+      return {
+        icon: "far-clock",
+        id: "two_weeks",
+        label: "time_shortcut.two_weeks",
+        time: twoWeeks(timezone),
+        timeFormatKey: "dates.long_no_year",
+      };
+    },
+    sixMonths() {
+      return {
+        icon: "far-calendar-plus",
+        id: "six_months",
+        label: "time_shortcut.six_months",
+        time: sixMonths(timezone),
         timeFormatKey: "dates.long_no_year",
       };
     },
