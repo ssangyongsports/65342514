@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
   def use_crawler_layout?
     @use_crawler_layout ||=
       request.user_agent &&
-      (request.content_type.blank? || request.content_type.include?('html')) &&
+      (request.media_type.blank? || request.media_type.include?('html')) &&
       !['json', 'rss'].include?(params[:format]) &&
       (has_escaped_fragment? || params.key?("print") || show_browser_update? ||
       CrawlerDetection.crawler?(request.user_agent, request.headers["HTTP_VIA"])
